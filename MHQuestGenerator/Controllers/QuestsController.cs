@@ -83,12 +83,16 @@ namespace MHQuestGenerator.Controllers
         // POST: api/Quests
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Quest>> PostQuest(Quest quest)
+        public async Task<ActionResult<Quest>> PostQuest(string date)
         {
           if (_context.Quest == null)
           {
               return Problem("Entity set 'QuestContext.Quest'  is null.");
           }
+            Quest quest = new Quest();
+            quest.ArmorSet = "Armour set here";
+            quest.Monster = "Monster here";
+            quest.isComplete = false;
             _context.Quest.Add(quest);
             await _context.SaveChangesAsync();
 
