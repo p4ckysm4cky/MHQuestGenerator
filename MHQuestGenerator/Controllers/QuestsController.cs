@@ -16,8 +16,9 @@ namespace MHQuestGenerator.Controllers
     {
         private readonly HttpClient _client;
         private readonly QuestContext _context;
+        private readonly ILogger _logger;
 
-        public QuestsController(IHttpClientFactory clientFactory, QuestContext context)
+        public QuestsController(IHttpClientFactory clientFactory, QuestContext context, ILogger<QuestsController> logger)
         {
             _context = context;
             if (clientFactory is null)
@@ -25,12 +26,15 @@ namespace MHQuestGenerator.Controllers
                 throw new ArgumentNullException(nameof(clientFactory));
             }
             _client = clientFactory.CreateClient("mhw");
+            _logger = logger;
         }
 
         // GET: api/Quests
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Quest>>> GetQuest()
         {
+            Console.WriteLine("GET api/Quests");
+            _logger.LogDebug("GET api/Quests");
           if (_context.Quest == null)
           {
               return NotFound();
@@ -42,7 +46,9 @@ namespace MHQuestGenerator.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Quest>> GetQuest(long id)
         {
-          if (_context.Quest == null)
+            Console.WriteLine("GET api/Quests/id ran");
+            _logger.LogDebug("GET api/Quests/id ran");
+            if (_context.Quest == null)
           {
               return NotFound();
           }
@@ -61,6 +67,8 @@ namespace MHQuestGenerator.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutQuest(long id, Quest quest)
         {
+            Console.WriteLine("PUT api/Quests/id");
+            _logger.LogDebug("PUT api/Quests/id");
             if (id != quest.Id)
             {
                 return BadRequest();
@@ -92,7 +100,9 @@ namespace MHQuestGenerator.Controllers
         [HttpPost]
         public async Task<ActionResult<Quest>> PostQuest(string date)
         {
-          if (_context.Quest == null)
+            Console.WriteLine("POST api/Quests/");
+            _logger.LogDebug("POST api/Quests/");
+            if (_context.Quest == null)
           {
               return Problem("Entity set 'QuestContext.Quest'  is null.");
           }
@@ -123,6 +133,8 @@ namespace MHQuestGenerator.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteQuest(long id)
         {
+            Console.WriteLine("DELETE api/Quests/");
+            _logger.LogDebug("DELETE api/Quests/");
             if (_context.Quest == null)
             {
                 return NotFound();

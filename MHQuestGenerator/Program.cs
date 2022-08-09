@@ -1,7 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using MHQuestGenerator.Models;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((ctx, lc) => lc
+    .WriteTo.Console()
+    .ReadFrom.Configuration(ctx.Configuration));
+
 
 // Add services to the container.
 
