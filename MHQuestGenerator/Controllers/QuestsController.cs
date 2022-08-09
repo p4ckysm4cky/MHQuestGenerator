@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MHQuestGenerator.Models;
+using Newtonsoft.Json;
 
 namespace MHQuestGenerator.Controllers
 {
@@ -13,11 +14,17 @@ namespace MHQuestGenerator.Controllers
     [ApiController]
     public class QuestsController : ControllerBase
     {
+        private readonly HttpClient _client;
         private readonly QuestContext _context;
 
-        public QuestsController(QuestContext context)
+        public QuestsController(IHttpClientFactory clientFactory, QuestContext context)
         {
             _context = context;
+            if (clientFactory is null)
+            {
+                throw new ArgumentNullException(nameof(clientFactory));
+            }
+            _client = clientFactory.CreateClient("mhw");
         }
 
         // GET: api/Quests
@@ -89,9 +96,22 @@ namespace MHQuestGenerator.Controllers
           {
               return Problem("Entity set 'QuestContext.Quest'  is null.");
           }
+            string[] dateSplit = date.Split('-');
             Quest quest = new Quest();
-            quest.ArmorSet = "Armour set here";
-            quest.Monster = "Monster here";
+            String dayNum = dateSplit[0].TrimStart(new Char[] {'0'});
+            String monthNum = dateSplit[1].TrimStart(new Char[] {'0'});
+
+            var monsterRes = await _client.GetAsync("/monsters/" + dayNum);
+            var monsterContent = await monsterRes.Content.ReadAsStringAsync();
+            Monster monster = JsonConvert.DeserializeObject<Monster>(monsterContent);
+
+            var armorRes = await _client.GetAsync("/armor/sets/" + monthNum);
+            var armorContent = await armorRes.Content.ReadAsStringAsync();
+            ArmorSet armorSet  = JsonConvert.DeserializeObject<ArmorSet>(armorContent);
+    
+
+            quest.ArmorSet = $"{armorSet.name}";
+            quest.Monster = $"{monster.name}";
             quest.isComplete = false;
             _context.Quest.Add(quest);
             await _context.SaveChangesAsync();

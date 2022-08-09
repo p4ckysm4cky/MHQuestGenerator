@@ -14,6 +14,10 @@ builder.Services.AddDbContext<QuestContext>(opt =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpClient("mhw", configureClient: client =>
+{
+    client.BaseAddress = new Uri("https://mhw-db.com/");
+});
 
 var app = builder.Build();
 
