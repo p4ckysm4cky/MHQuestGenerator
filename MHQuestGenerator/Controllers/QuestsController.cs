@@ -65,19 +65,21 @@ namespace MHQuestGenerator.Controllers
         // PUT: api/Quests/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutQuest(long id, Quest quest)
+        public async Task<IActionResult> PutQuest(long id, Boolean isComplete)
         {
             Console.WriteLine("PUT api/Quests/id");
             _logger.LogDebug("PUT api/Quests/id");
-            if (id != quest.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(quest).State = EntityState.Modified;
+            //if (id != quest.Id)
+            //{
+            //    return BadRequest();
+            //}
+            var quest = await _context.Quest.FindAsync(id);
+            
 
             try
             {
+                quest.isComplete = isComplete;
+                _context.Entry(quest).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -92,7 +94,19 @@ namespace MHQuestGenerator.Controllers
                 }
             }
 
-            return NoContent();
+            return CreatedAtAction("GetQuest", new { id = quest.Id }, quest);
+        }
+
+
+        public static String[] genDateArray(string date)
+        {
+            string[] dateSplit = date.Split('-');
+            Quest quest = new Quest();
+            String dayNum = dateSplit[0].TrimStart(new Char[] { '0' });
+            String monthNum = dateSplit[1].TrimStart(new Char[] { '0' });
+            String yearNum = dateSplit[2].Substring(dateSplit[2].Length - 2).TrimStart(new Char[] { '0' });
+            String[] dateArray = { dayNum, monthNum, yearNum };
+            return dateArray;
         }
 
         // POST: api/Quests
@@ -108,8 +122,9 @@ namespace MHQuestGenerator.Controllers
           }
             string[] dateSplit = date.Split('-');
             Quest quest = new Quest();
-            String dayNum = dateSplit[0].TrimStart(new Char[] {'0'});
-            String monthNum = dateSplit[1].TrimStart(new Char[] {'0'});
+            String[] dateArray = genDateArray(date);
+            String dayNum = dateArray[0];
+            String monthNum = dateArray[1];
 
             var monsterRes = await _client.GetAsync("/monsters/" + dayNum);
             var monsterContent = await monsterRes.Content.ReadAsStringAsync();
@@ -126,7 +141,7 @@ namespace MHQuestGenerator.Controllers
             _context.Quest.Add(quest);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetQuest", new { id = quest.Id }, quest);
+            return CreatedAtAction("PutQuest", new { id = quest.Id }, quest);
         }
 
         // DELETE: api/Quests/5

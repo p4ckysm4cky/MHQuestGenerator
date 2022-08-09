@@ -5,6 +5,8 @@ VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MHQuestGenerator", "MHQuestGenerator\MHQuestGenerator.csproj", "{7AFA3E4F-02FC-40C5-80AB-11566DE87A8E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MHQuestTest", "MHQuestTest\MHQuestTest.csproj", "{61917C91-6C2C-4256-8416-93861E83071D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{7AFA3E4F-02FC-40C5-80AB-11566DE87A8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7AFA3E4F-02FC-40C5-80AB-11566DE87A8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7AFA3E4F-02FC-40C5-80AB-11566DE87A8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61917C91-6C2C-4256-8416-93861E83071D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61917C91-6C2C-4256-8416-93861E83071D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61917C91-6C2C-4256-8416-93861E83071D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61917C91-6C2C-4256-8416-93861E83071D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
