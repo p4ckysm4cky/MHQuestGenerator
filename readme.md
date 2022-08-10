@@ -10,7 +10,7 @@ A REST api which generates a Monster Hunter World "quest" when given a date. The
 
 Output:
 
-```json
+```javascript
 [
 	{
         id: 1,
