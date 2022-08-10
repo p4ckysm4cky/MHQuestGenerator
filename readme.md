@@ -27,7 +27,7 @@ Output:
 
 * Create at least two configuration files, and demonstrate the differences between starting the project with one file over another.
   * When using `appsettings.json` it will create a `.log` file which Serilog will save to
-  * When using `appsettings.Development.json` it will Serilog will output to console instead
+  * When using `appsettings.Development.json`, Serilog will output to console instead
 * Demonstrate an understanding of how these middleware via DI (dependency injection) simplifies your code.
   * Dependency injection helps simplify code by making it so that the Controller does not create the objects directly and instead it takes it in as arguments. This allows for decoupling and therefore simplifies our code.
 * Demonstrate an understanding of why the middleware libraries made your code easier to test.
