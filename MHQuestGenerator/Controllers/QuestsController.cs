@@ -35,10 +35,10 @@ namespace MHQuestGenerator.Controllers
         {
             Console.WriteLine("GET api/Quests");
             _logger.LogDebug("GET api/Quests");
-          if (_context.Quest == null)
-          {
-              return NotFound();
-          }
+            if (_context.Quest == null)
+            {
+                return NotFound();
+            }
             return await _context.Quest.ToListAsync();
         }
 
@@ -49,9 +49,9 @@ namespace MHQuestGenerator.Controllers
             Console.WriteLine("GET api/Quests/id ran");
             _logger.LogDebug("GET api/Quests/id ran");
             if (_context.Quest == null)
-          {
-              return NotFound();
-          }
+            {
+                return NotFound();
+            }
             var quest = await _context.Quest.FindAsync(id);
 
             if (quest == null)
@@ -74,7 +74,7 @@ namespace MHQuestGenerator.Controllers
             //    return BadRequest();
             //}
             var quest = await _context.Quest.FindAsync(id);
-            
+
 
             try
             {
@@ -117,9 +117,9 @@ namespace MHQuestGenerator.Controllers
             Console.WriteLine("POST api/Quests/");
             _logger.LogDebug("POST api/Quests/");
             if (_context.Quest == null)
-          {
-              return Problem("Entity set 'QuestContext.Quest'  is null.");
-          }
+            {
+                return Problem("Entity set 'QuestContext.Quest'  is null.");
+            }
             string[] dateSplit = date.Split('-');
             Quest quest = new Quest();
             String[] dateArray = genDateArray(date);
@@ -132,8 +132,8 @@ namespace MHQuestGenerator.Controllers
 
             var armorRes = await _client.GetAsync("/armor/sets/" + monthNum);
             var armorContent = await armorRes.Content.ReadAsStringAsync();
-            ArmorSet armorSet  = JsonConvert.DeserializeObject<ArmorSet>(armorContent);
-    
+            ArmorSet armorSet = JsonConvert.DeserializeObject<ArmorSet>(armorContent);
+
 
             quest.ArmorSet = $"{armorSet.name}";
             quest.Monster = $"{monster.name}";

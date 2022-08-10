@@ -3,10 +3,23 @@ using MHQuestGenerator.Models;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+var seriLogCondition = config["Serilog"];
 
-builder.Host.UseSerilog((ctx, lc) => lc
-    .WriteTo.Console()
-    .ReadFrom.Configuration(ctx.Configuration));
+System.Diagnostics.Debug.WriteLine(seriLogCondition);
+Console.WriteLine(seriLogCondition);
+
+if (string.Equals(seriLogCondition, "console"))
+{
+    builder.Host.UseSerilog((ctx, lc) => lc
+        .WriteTo.Console()
+        .ReadFrom.Configuration(ctx.Configuration));
+}
+else
+{
+    builder.Host.UseSerilog((ctx, lc) => lc
+        .WriteTo.File("log.log", rollingInterval: RollingInterval.Day));
+}
 
 
 // Add services to the container.
